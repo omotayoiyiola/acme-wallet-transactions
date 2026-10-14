@@ -4,6 +4,25 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 afterEach(() => vi.unstubAllGlobals())
 
 describe('API client', () => {
+  it.each([
+    [404, '<html>Not found</html>'],
+    [502, 'Bad gateway'],
+    [503, ''],
+  ])('preserves HTTP %s when the error body is not JSON', async (status, body) => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(body, { status })))
+    await expect(api.get('/transactions/missing')).rejects.toMatchObject({
+      name: 'ApiError',
+      status,
+      code: 'HTTP_ERROR',
+      message: 'Unable to complete the request.',
+    })
+  })
+
+  it('does not treat a malformed successful response as valid data', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('not JSON', { status: 200 })))
+    await expect(api.get('/transactions')).rejects.toMatchObject({ name: 'SyntaxError' })
+  })
+
   it('throws typed backend errors instead of treating failures as data', async () => {
     vi.stubGlobal(
       'fetch',

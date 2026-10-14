@@ -21,7 +21,12 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<ApiSucc
       ...init.headers,
     },
   })
-  const body = await res.json()
+  const body = await res.json().catch((error: unknown) => {
+    // Error responses may come from a proxy rather than our JSON API.
+    // Preserve malformed-success and cancellation errors instead of hiding them.
+    if (res.ok || init.signal?.aborted) throw error
+    return undefined
+  })
   if (!res.ok) {
     throw new ApiError(
       res.status,
