@@ -16,12 +16,20 @@ export function UserMenu() {
   const [user, setUser] = useState<User>()
 
   useEffect(() => {
-    getMe().then((res) => setUser(res.data))
+    getMe()
+      .then((res) => setUser(res.data))
+      .catch(() => setUser(undefined))
   }, [])
 
   return (
     <div className={styles.menu}>
-      <button type="button" className={styles.trigger} onClick={() => setOpen(!open)} aria-expanded={open}>
+      <button
+        type="button"
+        aria-label="Account menu"
+        className={styles.trigger}
+        onClick={() => setOpen(!open)}
+        aria-expanded={open}
+      >
         <Avatar src={user?.avatarUrl ?? null} alt="" size="sm" />
         <span className={styles.name}>{user?.firstName}</span>
         <Icon name="chevron-down" size={16} />

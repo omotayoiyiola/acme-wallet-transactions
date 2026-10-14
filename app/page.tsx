@@ -8,14 +8,17 @@ import styles from './page.module.css'
 export default function DashboardPage() {
   const [user, setUser] = useState<User>()
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     getMe()
       .then((res) => setUser(res.data))
+      .catch(() => setError(true))
       .finally(() => setIsLoading(false))
   }, [])
 
   if (isLoading) return <p className={styles.loading}>Loading…</p>
+  if (error || !user) return <p role="alert">We couldn’t load your dashboard. Please refresh to try again.</p>
 
   return (
     <div className={styles.page}>

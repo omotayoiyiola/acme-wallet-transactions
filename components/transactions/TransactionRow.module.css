@@ -1,6 +1,6 @@
 .row {
   display: grid;
-  grid-template-columns: 40px minmax(0, 1fr) auto auto;
+  grid-template-columns: 40px minmax(0, 1fr) 120px minmax(150px, auto);
   align-items: center;
   gap: var(--space-4);
   width: 100%;
@@ -22,6 +22,8 @@
 }
 
 .icon {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -74,4 +76,40 @@
   font-size: var(--text-xs);
   color: var(--color-text-subtle);
   white-space: nowrap;
+}
+
+.mobileStatus {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .row {
+    grid-template-columns: 36px minmax(0, 1fr) auto;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    min-height: 74px;
+  }
+  .icon {
+    width: 36px;
+    height: 36px;
+  }
+  .desktopStatus,
+  .meta {
+    display: none;
+  }
+  .mobileStatus {
+    display: block;
+    margin-top: var(--space-1);
+  }
+  .amount,
+  .credit {
+    font-size: var(--text-sm);
+    white-space: nowrap;
+  }
+  .title {
+    font-size: var(--text-sm);
+  }
+  .end {
+    min-width: 0;
+  }
 }

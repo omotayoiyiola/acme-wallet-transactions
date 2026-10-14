@@ -3,6 +3,7 @@ import { cx } from '@/lib/cx'
 import styles from './Field.module.css'
 
 export interface FieldProps {
+  htmlFor?: string
   label: string
   hint?: ReactNode
   error?: string
@@ -13,10 +14,12 @@ export interface FieldProps {
 }
 
 /** Label + control + hint/error. Used by Input and Select. */
-export function Field({ label, hint, error, hideLabel, className, children }: FieldProps) {
+export function Field({ label, hint, error, hideLabel, className, children, htmlFor }: FieldProps) {
   return (
     <div className={cx(styles.field, className)}>
-      <label className={cx(styles.label, hideLabel && 'visually-hidden')}>{label}</label>
+      <label htmlFor={htmlFor} className={cx(styles.label, hideLabel && 'visually-hidden')}>
+        {label}
+      </label>
       {children}
       {error ? <p className={styles.error}>{error}</p> : hint ? <p className={styles.hint}>{hint}</p> : null}
     </div>

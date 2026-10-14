@@ -10,10 +10,13 @@ import type {
 import { api } from './client'
 
 export interface TransactionQuery {
+  /** Mock API diagnostic scenario. */
+  __scenario?: string
   page?: number
   limit?: number
   type?: TransactionType
-  status?: TransactionStatus
+  /** The design includes reversed; the current backend returns no matching records. */
+  status?: TransactionStatus | 'reversed'
   currency?: Currency
   q?: string
   /** YYYY-MM-DD, inclusive, UTC */

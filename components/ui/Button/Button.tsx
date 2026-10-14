@@ -29,7 +29,9 @@ export function Button({
   ...rest
 }: ButtonProps) {
   return (
-    <div
+    <button
+      type="button"
+      disabled={disabled}
       className={cx(
         styles.button,
         styles[variant],
@@ -44,6 +46,6 @@ export function Button({
       {iconLeft && <Icon name={iconLeft} size={16} />}
       {children}
       {iconRight && <Icon name={iconRight} size={16} />}
-    </div>
+    </button>
   )
 }
